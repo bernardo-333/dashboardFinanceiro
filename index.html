@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro</title>
+    <!-- Carrega o Tailwind CSS da CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter como padrão, que é carregada pelo Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilo para os itens da lista de detalhes */
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0; /* py-3 */
+            border-bottom: 1px solid #e5e7eb; /* border-b border-slate-200 */
+        }
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        .data-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #475569; /* text-slate-600 */
+        }
+        .data-value {
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 600; /* font-semibold */
+            color: #1e293b; /* text-slate-800 */
+        }
+        /* Estilo para os cartões de KPI */
+        .kpi-card {
+            background-color: #f8fafc; /* bg-slate-50 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1rem; /* p-4 */
+            text-align: center;
+        }
+        .kpi-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            color: #475569; /* text-slate-600 */
+            margin-bottom: 0.25rem; /* mb-1 */
+        }
+        .kpi-label svg {
+            width: 1rem; /* w-4 */
+            height: 1rem; /* h-4 */
+            margin-right: 0.5rem; /* mr-2 */
+            color: #64748b; /* text-slate-500 */
+        }
+        .kpi-value {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #0f172a; /* text-slate-900 */
+        }
+        
+        /* Estilo para o spinner de carregamento */
+        .loading-spinner {
+            border: 4px solid #f3f4f6; /* border-gray-200 */
+            border-top: 4px solid #3b82f6; /* border-blue-500 */
+            border-radius: 50%;
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
+            animation: spin 1s linear infinite;
+            margin: 1rem auto; /* my-4 mx-auto */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Título Principal -->
+        <h1 class="text-3xl font-bold text-slate-900 mb-6">Dashboard Financeiro</h1>
+
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Card: Visão Geral (Ocupa 1 coluna no desktop) -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-5">Visão Geral</h2>
+                    
+                    <!-- KPIs (Indicadores Chave) -->
+                    <div class="grid grid-cols-1 gap-4 mb-5">
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
+                                Quantidade
+                            </div>
+                            <div class="kpi-value">1.188</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 6a4.5 4.5 0 00-1.757 8.828l.879.659c1.171.879 3.07.879 4.242 0l.879-.659A4.5 4.5 0 0012 6z" /></svg>
+                                Lucro Bruto
+                            </div>
+                            <div class="kpi-value">$1.675,00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                                Lucro Líquido
+                            </div>
+                            <div class="kpi-value text-green-600">$676,93</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalhes Financeiros -->
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Taxa da Maquininha</span>
+                            <span class="data-value text-red-600">($6,45)</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Custo Total</span>
+                            <span class="data-value text-red-600">($991,62)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: P&B (Ocupa 1 coluna no desktop) -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-5">P&B</h2>
+
+                    <!-- KPIs -->
+                    <div class="grid grid-cols-1 gap-4 mb-5">
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
+                                Quantidade
+                            </div>
+                            <div class="kpi-value">688</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 6a4.5 4.5 0 00-1.757 8.828l.879.659c1.171.879 3.07.879 4.242 0l.879-.659A4.5 4.5 0 0012 6z" /></svg>
+                                Lucro Bruto
+                            </div>
+                            <div class="kpi-value">$999,50</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                                Lucro Líquido
+                            </div>
+                            <div class="kpi-value text-green-600">$399,88</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalhes e Distribuição -->
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Taxa da Maquininha</span>
+                            <span class="data-value text-red-600">($6,45)</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Bruto Final</span>
+                            <span class="data-value">$993,05</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Custo Total</span>
+                            <span class="data-value text-red-600">($593,17)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: GABRIEL (Ocupa 1 coluna no desktop) -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-purple-700 mb-5">GABRIEL</h2>
+                    
+                    <!-- KPIs -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-4 mb-5">
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
+                                Quantidade
+                            </div>
+                            <div class="kpi-value">500</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 6a4.5 4.5 0 00-1.757 8.828l.879.659c1.171.879 3.07.879 4.242 0l.879-.659A4.5 4.5 0 0012 6z" /></svg>
+                                Lucro Bruto
+                            </div>
+                            <div class="kpi-value">$675,50</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                                Lucro Líquido
+                            </div>
+                            <div class="kpi-value text-green-600">$277,05</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalhes Financeiros -->
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Taxa da Maquininha</span>
+                            <span class="data-value">$0,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Bruto Final</span>
+                            <span class="data-value">$675,50</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Custo Total</span>
+                            <span class="data-value text-red-600">($398,45)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Distribuição Visão Geral -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-5">Distribuição - Geral</h2>
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Parte do Negócio</span>
+                            <span class="data-value">$33,84</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Transporte</span>
+                            <span class="data-value">$30,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Gabriel</span>
+                            <span class="data-value">$146,60</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Marcos</span>
+                            <span class="data-value">$40,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Bernardo</span>
+                            <span class="data-value">$213,23</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Pierry</span>
+                            <span class="data-value">$1.204,85</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Distribuição P&B -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-5">Distribuição - P&B</h2>
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Parte do Negócio</span>
+                            <span class="data-value">$19,99</span>
+                        </div>
+                         <div class="data-item">
+                            <span class="data-label">Transporte</span>
+                            <span class="data-value">$20,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Gabriel</span>
+                            <span class="data-value">$20,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Marcos</span>
+                            <span class="data-value">$40,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Bernardo</span>
+                            <span class="data-value">$149,94</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Pierry</span>
+                            <span class="data-value">$743,11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Distribuição GABRIEL -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-purple-700 mb-5">Distribuição - GABRIEL</h2>
+                    <div class="divide-y divide-slate-200">
+                        <div class="data-item">
+                            <span class="data-label">Parte do Negócio</span>
+                            <span class="data-value">$13,85</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Transporte</span>
+                            <span class="data-value">$10,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Gabriel</span>
+                            <span class="data-value">$126,60</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Marcos</span>
+                            <span class="data-value">$0,00</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Bernardo</span>
+                            <span class="data-value">$63,29</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Parte Pierry</span>
+                            <span class="data-value">$461,74</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Análise IA (Novo Recurso) -->
+            <div class="lg:col-span-3 bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <h2 class="text-2xl font-semibold text-indigo-700">Análise com IA (Gemini)</h2>
+                        <button id="generate-analysis-btn" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            Gerar Análise Financeira
+                        </button>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-200">
+                        <!-- Spinner de Carregamento -->
+                        <div id="loading-spinner" class="loading-spinner hidden"></div>
+                        
+                        <!-- Resultado da Análise -->
+                        <div id="analysis-result" class="text-slate-700 text-sm leading-relaxed prose prose-sm max-w-none">
+                            <p class="text-slate-500">Clique no botão acima para gerar uma análise dos dados financeiros usando a IA do Gemini.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div> <!-- Fim do Grid Principal -->
+    </div> <!-- Fim do Container Principal -->
+
+    <!-- Script para a API do Gemini -->
+    <script type="module">
+        // --- Elementos da DOM ---
+        const generateBtn = document.getElementById('generate-analysis-btn');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const analysisResultDiv = document.getElementById('analysis-result');
+
+        // --- Configuração da API ---
+        // A API Key será injetada pelo ambiente de execução. Deixe em branco.
+        const apiKey = ""; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // --- Dados para Análise (Extraídos do seu prompt) ---
+        const financialData = `
+            DADOS GERAIS:
+            - Quantidade Total: 1.188
+            - Lucro Bruto Total: $1.675,00
+            - Taxa da Maquininha Total: $6,45
+            - Custo Total: $991,62
+            - Lucro Líquido Total: $676,93
+            - Distribuição (Geral):
+                - Parte do Negócio: $33,84
+                - Transporte: $30,00
+                - Parte Gabriel: $146,60
+                - Parte Marcos: $40,00
+                - Parte Bernardo: $213,23
+                - Parte Pierry: $1.204,85
+
+            DADOS P&B:
+            - Quantidade: 688
+            - Lucro Bruto: $999,50
+            - Taxa da Maquininha: $6,45
+            - Custo Total: $593,17
+            - Lucro Líquido: $399,88
+            - Distribuição (P&B):
+                - Parte do Negócio: $19,99
+                - Transporte: $20,00
+                - Parte Gabriel: $20,00
+                - Parte Marcos: $40,00
+                - Parte Bernardo: $149,94
+                - Parte Pierry: $743,11
+
+            DADOS GABRIEL:
+            - Quantidade: 500
+            - Lucro Bruto: $675,50
+            - Taxa da Maquininha: $0,00
+            - Custo Total: $398,45
+            - Lucro Líquido: $277,05
+            - Distribuição (GABRIEL):
+                - Parte do Negócio: $13,85
+                - Transporte: $10,00
+                - Parte Gabriel: $126,60
+                - Parte Marcos: $0,00
+                - Parte Bernardo: $63,29
+                - Parte Pierry: $461,74
+        `;
+
+        // --- Instrução do Sistema e Prompt do Usuário ---
+        const systemPrompt = "Você é um analista financeiro. Sua tarefa é analisar os dados financeiros fornecidos e gerar um resumo executivo em português. Foque nos pontos chave, como as fontes de lucro (P&B vs. GABRIEL), a estrutura de custos e a distribuição final dos lucros entre as partes (Negócio, Transporte, Gabriel, Marcos, Bernardo, Pierry). Seja claro, direto e use parágrafos curtos ou listas.";
+        
+        const userQuery = `
+            Por favor, analise os seguintes dados financeiros e forneça um resumo executivo:
+            
+            ${financialData}
+        `;
+
+        // --- Função de Fetch com Backoff Exponencial ---
+        async function fetchWithBackoff(url, options, maxRetries = 5, baseDelay = 1000) {
+            let attempt = 0;
+            while (attempt < maxRetries) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return response;
+                    }
+                    // Não registrar erros 4xx/5xx no console, apenas tentar novamente se for erro de "rate limit" (429)
+                    if (response.status !== 429) {
+                        // Se for um erro diferente de "rate limit", não tentar novamente
+                        return response; 
+                    }
+                } catch (error) {
+                    // Ignorar erros de rede para nova tentativa
+                }
+                
+                // Calcular delay com jitter
+                const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                attempt++;
+            }
+            // Se todas as tentativas falharem, retorna uma resposta de erro simulada
+            return new Response(JSON.stringify({ error: "Falha ao contatar a API após múltiplas tentativas." }), { status: 500 });
+        }
+
+        // --- Função Principal da API ---
+        async function callGeminiAPI() {
+            // 1. Mudar UI para estado de carregamento
+            analysisResultDiv.innerHTML = '';
+            loadingSpinner.classList.remove('hidden');
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Gerando...';
+
+            // 2. Montar o Payload
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
+
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+
+            try {
+                // 3. Chamar a API com backoff
+                const response = await fetchWithBackoff(apiUrl, options);
+                const result = await response.json();
+
+                if (!response.ok || !result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    throw new Error(result.error?.message || "Não foi possível gerar a análise. A resposta da API estava vazia ou mal formatada.");
+                }
+
+                // 4. Processar a resposta
+                const rawText = result.candidates[0].content.parts[0].text;
+                
+                // Converter quebras de linha de markdown para tags <br> para exibição em HTML
+                const formattedText = rawText
+                    .replace(/\n\n/g, '<br><br>') // Parágrafos
+                    .replace(/\n/g, '<br>') // Linhas
+                    .replace(/\* (.*?)(?=<br>|<br><br>|$)/g, '<li>$1</li>') // Itens de lista
+                    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>'); // Envolver listas
+
+                analysisResultDiv.innerHTML = formattedText;
+
+            } catch (error) {
+                console.error("Erro ao chamar a API do Gemini:", error);
+                analysisResultDiv.innerHTML = `<p class="text-red-600 font-semibold">Ocorreu um erro ao gerar a análise: ${error.message}</p>`;
+            } finally {
+                // 5. Restaurar UI
+                loadingSpinner.classList.add('hidden');
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Gerar Análise Financeira';
+            }
+        }
+
+        // --- Adicionar Event Listener ---
+        generateBtn.addEventListener('click', callGeminiAPI);
+
+    </script>
+
+</body>
+</html>
+
